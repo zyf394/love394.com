@@ -85,7 +85,7 @@ module.exports = require("path");
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__dirname) {var _require = __webpack_require__(1),
+var _require = __webpack_require__(1),
     join = _require.join,
     resolve = _require.resolve;
 
@@ -113,10 +113,10 @@ module.exports = {
   ** Global CSS
   */
   css: [{
-    src: resolve(__dirname + '/assets/css/variable.styl'),
+    src: resolve('./assets/css/variable.styl'),
     lang: 'stylus'
   }, {
-    src: resolve(__dirname + '/assets/css/main.styl'),
+    src: resolve('./assets/css/main.styl'),
     lang: 'stylus' // 指定 scss 而非 sass
   }],
   /*
@@ -154,7 +154,6 @@ module.exports = {
     postcss: [__webpack_require__(20)({ remUnit: 46.875 })]
   }
 };
-/* WEBPACK VAR INJECTION */}.call(exports, ""))
 
 /***/ },
 /* 3 */

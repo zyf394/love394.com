@@ -44,6 +44,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
     "nodemon": "^1.11.0",
+    "pm2": "^2.5.0",
     "postcss-px2rem": "^0.3.0",
     "px2rem-loader": "^0.1.7",
     "scmp": "^2.0.0",
