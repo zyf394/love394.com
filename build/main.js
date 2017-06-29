@@ -86,11 +86,12 @@ module.exports = require("path");
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__dirname) {var _require = __webpack_require__(1),
-    join = _require.join;
+    join = _require.join,
+    resolve = _require.resolve;
 
 var fs = __webpack_require__(11);
 var webpack = __webpack_require__(25);
-var content = fs.readFileSync(join(__dirname + 'assets/js/rem.js'), 'utf8');
+var content = fs.readFileSync(resolve('./assets/js/rem.js'), 'utf8');
 
 module.exports = {
   /*
@@ -112,10 +113,10 @@ module.exports = {
   ** Global CSS
   */
   css: [{
-    src: join(__dirname + 'assets/css/variable.styl'),
+    src: resolve(__dirname + '/assets/css/variable.styl'),
     lang: 'stylus'
   }, {
-    src: join(__dirname + 'assets/css/main.styl'),
+    src: resolve(__dirname + '/assets/css/main.styl'),
     lang: 'stylus' // 指定 scss 而非 sass
   }],
   /*

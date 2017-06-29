@@ -1,7 +1,7 @@
-const { join } = require('path')
+const { join, resolve } = require('path')
 const fs = require('fs')
 const webpack = require('webpack');
-const content = fs.readFileSync(join(__dirname + 'assets/js/rem.js'), 'utf8')
+const content = fs.readFileSync(resolve('./assets/js/rem.js'), 'utf8')
 
 module.exports = {
   /*
@@ -32,11 +32,11 @@ module.exports = {
   */
   css: [
     {
-      src: join(__dirname + 'assets/css/variable.styl'),
+      src: resolve(__dirname + '/assets/css/variable.styl'),
       lang: 'stylus'
     },
     {
-      src: join(__dirname + 'assets/css/main.styl'),
+      src: resolve(__dirname + '/assets/css/main.styl'),
       lang: 'stylus'
     } // 指定 scss 而非 sass
   ],
