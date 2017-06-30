@@ -11,7 +11,7 @@
         邮箱：<input type="text" name="email" @input="validateEmail" placeholder="请输入您的邮箱"/>
       </div>
       <div :class="['input-box', isValidPassword ? 'mfic-right' : '']">
-        密码：<input type="text" name="userphone" @input="validatePassword" placeholder="请输入您的密码，不少于8位"/>
+        密码：<input type="password" name="password" @input="validatePassword" placeholder="请输入您的密码，不少于8位"/>
       </div>
     </form>
     <div :class="['button', (isValidEmail && isValidPassword) ? 'submit' : '']" 
