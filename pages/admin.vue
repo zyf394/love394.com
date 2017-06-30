@@ -69,7 +69,7 @@ import {
 } from '../config'
 
 const domain = process.env.NODE_ENV !== env.prod ? origin.dev : origin.prod
-console.log(process.env)
+
 export default {
   asyncData ({ req, params }) {
     return axios.get(`http://${domain}/api/member/list`)
@@ -132,10 +132,7 @@ export default {
     }
   },
   mounted () {
-    let token = getToken()
-    if (!token) {
-      this.$router.replace(`/signin?redirect_url=${window.location.href}`)
-    }
+    
   }
 }
 </script>
