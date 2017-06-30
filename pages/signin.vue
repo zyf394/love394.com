@@ -1,9 +1,12 @@
 <template>
   <section class="container">
     <h2 class="title">
-      请登录
+      {{isSigninSuccess ? '登录成功' : '请登录'}}
     </h2>
-    <form class="form">
+    <div class='login-success mfic-right' v-show="isSigninSuccess">
+      
+    </div>
+    <form class="form" v-show="!isSigninSuccess">
       <div :class="['input-box', isValidEmail ? 'mfic-right' : '']">
         邮箱：<input type="text" name="email" @input="validateEmail" placeholder="请输入您的邮箱"/>
       </div>
@@ -12,13 +15,14 @@
       </div>
     </form>
     <div :class="['button', (isValidEmail && isValidPassword) ? 'submit' : '']" 
-          @click="signin">
+          @click="signin"
+          v-show="!isSigninSuccess">
       登录
     </div>
     <nuxt-link class="button" to="/">
       返回首页
     </nuxt-link>
-    <div class="register-tip">
+    <div class="register-tip" v-show="!isSigninSuccess">
       <a href="/signup">没有账号？点此注册</a>
     </div>
     <toast :isShow="toastConf.isShow"
@@ -52,7 +56,8 @@ export default {
       toastConf: {
         text: '',
         icon: ''
-      }
+      },
+      isSigninSuccess: false
     }
   },
   methods: {
@@ -76,12 +81,13 @@ export default {
             } else {
               me.toastConf = {
                 isShow: true,
-                text: '登录成功',
+                text: '登录成功，即将跳转',
                 icon: 'mfic-right'
               }
+              me.isSigninSuccess = true
               me['SET_TOKEN'](resData.token)
               window.localStorage.setItem('token', resData.token)
-              checkRedirectUrl()
+              checkRedirectUrl({delay: 3000})
             }
             me.$refs.toast.show()
           })
@@ -146,6 +152,17 @@ export default {
     height 59px
     line-height 60px
     font-size 28px
+.login-success
+  width 240px
+  height 240px
+  margin 0 auto
+  &.mfic-right::before
+    display block
+    width 240px
+    height 240px
+    font-size 160px
+    line-height 240px
+    color $color-light-pink
 .register-tip a
   font-size 28px
   color $color-light-grey-s

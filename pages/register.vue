@@ -1,10 +1,13 @@
 <template>
   <section class="container">
     <h2 class="title">
-      请提交以下报名信息
+      {{isRegsterSuccess ? '报名成功' : '请提交以下报名信息'}}
     </h2>
-    <p class="info-warn mfic-important">非394班级成员无法报名</p>
-    <form class="form">
+    <div class='register-success mfic-right' v-show="isRegsterSuccess">
+      
+    </div>
+    <p class="info-warn mfic-important" v-show="!isRegsterSuccess">非394班级成员无法报名</p>
+    <form class="form" v-show="!isRegsterSuccess">
       <div :class="['input-box', isValidName ? 'mfic-right' : '']">
         姓名：<input type="text" name="username" @input="validateName"/>
       </div>
@@ -13,7 +16,8 @@
       </div>
     </form>
     <div :class="['button', (isValidName && isValidPhone) ? 'submit' : '']" 
-          @click="register">
+          @click="register"
+          v-show="!isRegsterSuccess">
       我要报名
     </div>
     <nuxt-link class="button" to="/">
@@ -48,7 +52,8 @@ export default {
       toastConf: {
         text: '',
         icon: ''
-      }
+      },
+      isRegsterSuccess: false
     }
   },
   methods: {
@@ -57,10 +62,10 @@ export default {
       if (me.isValidName && me.isValidPhone) {
         axios.post(`http://${domain}/api/member/edit`,
           {
-            id: this.nameId,
+            _id: this.nameId,
             name: this.inputName,
             phone: this.inputPhone,
-            is_enrolled: true
+            is_enrolled: 1
           })
           .then((res) => {
             let resData = res.data
@@ -70,22 +75,18 @@ export default {
                 text: resData.errmsg,
                 icon: 'mfic-important'
               }
+              me.$refs.toast.show()
             } else {
-              me.toastConf = {
-                isShow: true,
-                text: '报名成功',
-                icon: 'mfic-right'
-              }
+              me.isRegsterSuccess = true
             }
-            me.$refs.toast.show()
           })
           .catch(err => console.log(err))
       }
     },
     validateName (event) {
-      let inputText = event.target.value
-      this.inputName = inputText
-      axios.post(`http://${domain}/api/member/list`, {name: inputText})
+      let inputName = event.target.value
+      this.inputName = inputName
+      axios.get(`http://${domain}/api/member/list`, {params: {name: inputName}})
         .then((res) => {
           let resData = res.data
           if (resData.length) {
@@ -156,4 +157,15 @@ export default {
     height 59px
     line-height 60px
     font-size 28px
+.register-success
+  width 240px
+  height 240px
+  margin 0 auto
+  &.mfic-right::before
+    display block
+    width 240px
+    height 240px
+    font-size 160px
+    line-height 240px
+    color $color-light-pink
 </style>

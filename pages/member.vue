@@ -17,7 +17,7 @@
           <td>{{val.name}}</td>
           <td>{{val.phone}}</td>
           <td>{{val.is_enrolled ? '是' : '否'}}</td>
-          <td>{{val.is_enrolled ? '是' : '否'}}</td>
+          <td>{{val.is_payed ? '是' : '否'}}</td>
         </tr>
       </tbody>
     </table>

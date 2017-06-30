@@ -103,34 +103,40 @@ export async function editAll(ctx, next) {
   }
 }
 export async function edit (ctx, next) {
-  const req = ctx.request.body
-  const keys = Object.keys(req)
-  const query = {
-    _id: ObjectId(req.id)
+  let req = ctx.request.body
+  let keys = Object.keys(req)
+  let query = {
+    _id: ObjectId(req._id)
   }
-  const update = {}
+  let update = {}
   const exist = await ctx.mongo.db('member').collection('member').find(query).toArray()
   if (exist.length) {
     if (req.is_enrolled && exist[0].is_enrolled) {
       responseError(ctx, 'MEMBER_ENROLLED')
     } else if (req.is_payed && exist[0].is_payed) {
       responseError(ctx, 'MEMBER_PAYED')
+    } else {
+      keys.forEach(item => {
+        if (!update['$set']) {
+          update['$set'] = {}
+        }
+        if (item === '_id') {
+          update['$set'][item] = query._id
+        } else {
+          update['$set'][item] = req[item]
+        }
+      })
+      try {
+        const result = await ctx.mongo.db('member').collection('member').updateOne(query, update)
+        if (result.result.ok) {
+          responseError(ctx, 'SUCCESS')
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   } else {
-    keys.forEach(item => {
-      if (!update['$set']) {
-        update['$set'] = {}
-      }
-      update['$set'][item] = req[item]
-    })
-    try {
-      const result = await ctx.mongo.db('member').collection('member').updateOne(query, update)
-      if (result.result.ok) {
-        responseError(ctx, 'SUCCESS')
-      }
-    } catch (e) {
-      console.log(e)
-    }
+    responseError(ctx, 'MEMBER_NOT_EXIST')
   }
 }
 

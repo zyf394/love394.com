@@ -8,11 +8,15 @@ export const getQueryParams = () => {
   return params
 }
 
-export const checkRedirectUrl = () => {
+export const checkRedirectUrl = ({delay = 0}) => {
   const params = getQueryParams()
-  if (params.redirect_url) {
-    window.location.href = window.decodeURIComponent(params.redirect_url)
-  }
+    window.setTimeout(() => {
+      if (params.redirect_url) {
+        window.location.href = window.decodeURIComponent(params.redirect_url)
+      } else {
+        window.location.href = '/'
+      }
+    }, delay)
 }
 
 export const getToken = () => {
