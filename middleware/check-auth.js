@@ -2,7 +2,6 @@ import { getTokenFromCookie, getTokenFromLocalStorage } from '../utils/auth'
 
 export default function (ctx) {
   const { isServer, store, req } = ctx
-  console.log(isServer, 'middleware')
    // If nuxt generate, pass this middleware
   // if (isServer && !req) return
   const token = isServer ? getTokenFromCookie(req) : getTokenFromLocalStorage()

@@ -88,7 +88,7 @@ export default {
     validateName (event) {
       let inputName = event.target.value
       this.inputName = inputName
-      axios.post(`http://${domain}/api/member/list`, {name: inputName})
+      axios.get(`http://${domain}/api/member/list`, {params: {name: inputName}})
         .then((res) => {
           let resData = res.data
           if (resData.length) {

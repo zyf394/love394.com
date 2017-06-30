@@ -1,4 +1,5 @@
 import querystring from 'querystring'
+import url from 'url'
 import { ObjectId } from 'mongodb'
 
 const ERRORS = {
@@ -72,7 +73,7 @@ export async function findOne (ctx, next) {
   ctx.body = await ctx.mongo.db('member').collection('member').find(query).toArray()
 }
 export async function findAll(ctx, next) {
-  const query = ctx.request.body || {}
+  const query = url.parse(ctx.request.url, true).query
   ctx.body = await ctx.mongo.db('member').collection('member').find(query).toArray()
 }
 export async function editAll(ctx, next) {
