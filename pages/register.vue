@@ -39,8 +39,6 @@ import { getToken, checkRedirectUrl } from '../utils/auth'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
 
-const domain = process.env.NODE_ENV !== env.prod ? origin.dev : origin.prod
-
 export default {
   data () {
     return {
@@ -60,7 +58,7 @@ export default {
     register (event) {
       let me = this
       if (me.isValidName && me.isValidPhone) {
-        axios.post(`http://${domain}/api/member/edit`,
+        axios.post('http://love394.com/api/member/edit',
           {
             _id: this.nameId,
             name: this.inputName,
@@ -86,7 +84,7 @@ export default {
     validateName (event) {
       let inputName = event.target.value
       this.inputName = inputName
-      axios.get(`http://${domain}/api/member/list`, {params: {name: inputName}})
+      axios.get('http://love394.com/api/member/list', {params: {name: inputName}})
         .then((res) => {
           let resData = res.data
           if (resData.length) {

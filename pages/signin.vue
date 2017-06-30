@@ -42,7 +42,6 @@ import {
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
 
-const domain = process.env.NODE_ENV !== env.prod ? origin.dev : origin.prod
 let params = {}
 
 export default {
@@ -65,7 +64,7 @@ export default {
     signin (event) {
       let me = this
       if (me.isValidEmail && me.isValidPassword) {
-        axios.post(`http://${domain}/api/user/signin`,
+        axios.post('http://love394.com/api/user/signin',
           {
             email: this.inputEmail,
             password: this.inputPassword

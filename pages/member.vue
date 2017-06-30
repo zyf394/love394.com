@@ -35,11 +35,9 @@ import {
   origin
 } from '../config'
 
-const domain = process.env.NODE_ENV !== env.prod ? origin.dev : origin.prod
-
 export default {
   asyncData ({ req, params }) {
-    return axios.get(`http://${domain}/api/member/list`)
+    return axios.get('http://love394.com/api/member/list')
     .then((res) => {
       return { members: res.data }
     })
