@@ -108,7 +108,7 @@ export default {
     },
     validatePassword (event) {
       let inputPassword = event.target.value
-      let passwordReg = /^.{8}$/
+      let passwordReg = /^.{8,}$/
       this.isValidPassword = passwordReg.test(inputPassword)
       this.inputPassword = inputPassword
     }
