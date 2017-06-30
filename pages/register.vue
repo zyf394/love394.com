@@ -35,7 +35,7 @@ import { getToken, checkRedirectUrl } from '../utils/auth'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
 
-const domain = process.env !== env.prod ? origin.dev : origin.prod
+const domain = process.env.NODE_ENV !== env.prod ? origin.dev : origin.prod
 
 export default {
   data () {

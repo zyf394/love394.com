@@ -26,7 +26,3 @@ using a prerelease version of Node (i.e. v7.6.0-rc.1) you will need to either:
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
-## DB
-db.createUser({user:'admin',pwd:'admin',roles:[{role:'userAdminAnyDatabase',db:'admin'}]'})
-db.createUser({user:'root',pwd:'root',roles:[{role:'root'}]})
-
