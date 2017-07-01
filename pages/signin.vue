@@ -37,7 +37,7 @@ import { getToken, getQueryParams, checkRedirectUrl } from '../utils/auth'
 
 import {
   env,
-  origin
+  domain
 } from '../config'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
@@ -64,7 +64,7 @@ export default {
     signin (event) {
       let me = this
       if (me.isValidEmail && me.isValidPassword) {
-        axios.post('http://love394.com/api/user/signin',
+        axios.post(`//${domain}/api/user/signin`,
           {
             email: this.inputEmail,
             password: this.inputPassword
@@ -122,6 +122,7 @@ export default {
 .info-warn
   color $color-light-grey-s
   font-size 28px
+  font-weight 100
   &.mfic-important::before
     margin-right 4px
 .form

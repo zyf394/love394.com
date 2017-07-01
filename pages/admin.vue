@@ -65,12 +65,12 @@ import { getToken } from '../utils/auth'
 
 import {
   env,
-  origin
+  domain
 } from '../config'
 
 export default {
   asyncData ({ req, params }) {
-    return axios.get('http://love394.com/api/member/list')
+    return axios.get(`//${domain}/api/member/list`)
     .then((res) => {
       let members = res.data.map(item => {
         let enrolledTime = item.enrolled_time
@@ -104,14 +104,14 @@ export default {
     },
     remove (index) {
       let willRemoveId = this.members[index]._id
-      axios.post('http://love394.com/api/member/remove', {_id: willRemoveId})
+      axios.post(`http://${domain}/api/member/remove`, {_id: willRemoveId})
         .then((res) => {
           this.members.splice(index, 1)
         })
         .catch(err => console.log(err))
     },
     submit () {
-      axios.post('http://love394.com/api/member/list', {data: this.members})
+      axios.post(`http://${domain}/api/member/list`, {data: this.members})
         .then((res) => {
           console.log(res)
           this.isEditting = false

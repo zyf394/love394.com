@@ -33,7 +33,7 @@
 import axios from 'axios'
 import {
   env,
-  origin
+  domain
 } from '../config'
 import { getToken, checkRedirectUrl } from '../utils/auth'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
@@ -58,7 +58,7 @@ export default {
     register (event) {
       let me = this
       if (me.isValidName && me.isValidPhone) {
-        axios.post('http://love394.com/api/member/edit',
+        axios.post(`//${domain}/api/member/edit`,
           {
             _id: this.nameId,
             name: this.inputName,
@@ -84,7 +84,7 @@ export default {
     validateName (event) {
       let inputName = event.target.value
       this.inputName = inputName
-      axios.get('http://love394.com/api/member/list', {params: {name: inputName}})
+      axios.get(`//${domain}/api/member/list`, {params: {name: inputName}})
         .then((res) => {
           let resData = res.data
           if (resData.length) {
@@ -125,6 +125,7 @@ export default {
 .info-warn
   color $color-light-grey-s
   font-size 28px
+  font-weight 100
   &.mfic-important::before
     margin-right 4px
 .form

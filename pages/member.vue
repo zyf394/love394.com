@@ -32,12 +32,12 @@ import { getToken } from '../utils/auth'
 
 import {
   env,
-  origin
+  domain
 } from '../config'
 
 export default {
   asyncData ({ req, params }) {
-    return axios.get('http://love394.com/api/member/list')
+    return axios.get(`//${domain}/api/member/list`)
     .then((res) => {
       return { members: res.data }
     })

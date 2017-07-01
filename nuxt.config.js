@@ -32,6 +32,10 @@ module.exports = {
   */
   css: [
     {
+      src: resolve('./assets/css/reset.styl'),
+      lang: 'stylus'
+    },
+    {
       src: resolve('./assets/css/variable.styl'),
       lang: 'stylus'
     },

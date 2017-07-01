@@ -16,7 +16,7 @@
       </div>
     </form>
     <div :class="['button', (isValidName && isValidEmail && isValidPassword) ? 'submit' : 'disabled']" 
-          @click="register">
+          @click="signup">
       注册
     </div>
     <nuxt-link class="button" to="/">
@@ -55,10 +55,10 @@ export default {
     }
   },
   methods: {
-    register (event) {
+    signup (event) {
       let me = this
       if (me.isValidName && me.isValidEmail && me.isValidPassword) {
-        axios.post('http://love394.com/api/user/signup',
+        axios.post(`//${domain}/api/user/signup`,
           {
             username: this.inputName,
             email: this.inputEmail,
@@ -88,7 +88,7 @@ export default {
     validateName (event) {
       let inputName = event.target.value
       this.inputName = inputName
-      axios.get('http://love394.com/api/member/list', {params: {name: inputName}})
+      axios.get(`//${domain}/api/member/list`, {params: {name: inputName}})
         .then((res) => {
           let resData = res.data
           if (resData.length) {
@@ -129,6 +129,7 @@ export default {
 .info-warn
   color $color-light-grey-s
   font-size 28px
+  font-weight 100
   &.mfic-important::before
     margin-right 4px
 .form
