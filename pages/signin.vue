@@ -64,7 +64,7 @@ export default {
     signin (event) {
       let me = this
       if (me.isValidEmail && me.isValidPassword) {
-        axios.post(`//${domain}/api/user/signin`,
+        axios.post(`http://${domain}/api/user/signin`,
           {
             email: this.inputEmail,
             password: this.inputPassword

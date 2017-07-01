@@ -36,8 +36,13 @@ import {
 } from '../config'
 
 export default {
+  data () {
+    return {
+      members: []
+    }
+  },
   asyncData ({ req, params }) {
-    return axios.get(`//${domain}/api/member/list`)
+    return axios.get(`http://${domain}/api/member/list`)
     .then((res) => {
       return { members: res.data }
     })

@@ -70,7 +70,7 @@ import {
 
 export default {
   asyncData ({ req, params }) {
-    return axios.get(`//${domain}/api/member/list`)
+    return axios.get(`http://${domain}/api/member/list`)
     .then((res) => {
       let members = res.data.map(item => {
         let enrolledTime = item.enrolled_time

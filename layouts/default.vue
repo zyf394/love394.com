@@ -45,7 +45,6 @@ export default {
   margin 20px 60px
   padding 25px 60px
   font-size 36px
-  font-weight 100
   &.disabled, &.disabled:hover
     color $color-white
     background-color $color-light-grey-s
@@ -64,4 +63,8 @@ export default {
   font-weight: 300;
   font-size: 72px;
   margin: 0;
+
+input
+  border none 
+  -webkit-appearance none
 </style>
