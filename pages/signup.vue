@@ -135,7 +135,7 @@ export default {
 .info-warn
   color $color-light-grey-s
   font-size 28px
-  font-weight 100
+  font-weight 200
   .mfic-important::before
     margin-right 4px
 .form

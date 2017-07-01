@@ -10,16 +10,16 @@
       <li>
         <h3>10月6日：</h3>
         <ul>
-          <li class="mfic-time">14：00 宾中门口集合</li>
-          <li class="mfic-time">15：00 校园游览拍照</li>
-          <li class="mfic-time">16：00 教室趣味活动（保密）</li>
-          <li class="mfic-time">17：00 拍集体合照</li>
-          <li class="mfic-time">18：00 晚餐</li>
-          <li class="mfic-time">21：00 唱K</li>
+          <li><i class="mfic-time"></i>14：00 宾中门口集合</li>
+          <li><i class="mfic-time"></i>15：00 校园游览拍照</li>
+          <li><i class="mfic-time"></i>16：00 教室趣味活动（保密）</li>
+          <li><i class="mfic-time"></i>17：00 拍集体合照</li>
+          <li><i class="mfic-time"></i>18：00 晚餐</li>
+          <li><i class="mfic-time"></i>21：00 唱K</li>
         </ul>
         <h3>10月7日：</h3>
         <ul>
-          <li class="mfic-time">自由活动（可自组小团队玩耍）</li>
+          <li><i class="mfic-time"></i>自由活动（可自组小团队玩耍）</li>
         </ul>
       </li>
     </ul>
@@ -60,9 +60,9 @@ export default {
     ul
       padding-left 60px
       li
-        &.mfic-time::before
+        .mfic-time::before
           margin-right 4px
-          color $color-light-grey-s
+          color $color-light-grey-ss
 .button
   margin-top: 50px;
 </style>
