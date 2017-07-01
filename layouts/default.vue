@@ -21,6 +21,11 @@ export default {
   components: {
     MyFooter,
     Toast
+  },
+  head () {
+    return {
+      title: `394聚会官方网站`
+    }
   }
 }
 </script>
@@ -59,7 +64,7 @@ export default {
     background-color: $color-light-pink;
 
 .title
-  color: #505153;
+  color: $color-grey;
   font-weight: 300;
   font-size: 72px;
   margin: 0;

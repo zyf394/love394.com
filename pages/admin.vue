@@ -69,6 +69,11 @@ import {
 } from '../config'
 
 export default {
+  head () {
+    return {
+      title: `管理平台`
+    }
+  },
   asyncData ({ req, params }) {
     return axios.get(`http://${domain}/api/member/list`)
     .then((res) => {

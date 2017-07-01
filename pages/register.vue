@@ -6,13 +6,15 @@
     <div class='register-success mfic-right' v-show="isRegsterSuccess">
       
     </div>
-    <p class="info-warn mfic-important" v-show="!isRegsterSuccess">非394班级成员无法报名</p>
+    <p class="info-warn" v-show="!isRegsterSuccess"><i class="mfic-important"></i>非394班级成员无法报名</p>
     <form class="form" v-show="!isRegsterSuccess">
-      <div :class="['input-box', isValidName ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         姓名：<input type="text" name="username" @input="validateName"/>
+        <i :class="isValidName ? 'mfic-right' : ''"></i>
       </div>
-      <div :class="['input-box', isValidPhone ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         电话：<input type="text" name="userphone" @input="validatePhone"/>
+        <i :class="isValidPhone ? 'mfic-right' : ''"></i>
       </div>
     </form>
     <div :class="['button', (isValidName && isValidPhone) ? 'submit' : '']" 
@@ -40,6 +42,11 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
 
 export default {
+  head () {
+    return {
+      title: `报名`
+    }
+  },
   data () {
     return {
       inputName: '',
@@ -126,7 +133,7 @@ export default {
   color $color-light-grey-s
   font-size 28px
   font-weight 100
-  &.mfic-important::before
+  .mfic-important::before
     margin-right 4px
 .form
   margin 50px 0
@@ -146,7 +153,7 @@ export default {
   font-size 36px
   text-align left
   border-bottom 1px solid #e5e5e5
-  &.mfic-right::before
+  .mfic-right::before
     position absolute
     right 0
     top 50%

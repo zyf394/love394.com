@@ -7,11 +7,13 @@
       
     </div>
     <form class="form" v-show="!isSigninSuccess">
-      <div :class="['input-box', isValidEmail ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         邮箱：<input type="text" name="email" @input="validateEmail" placeholder="请输入您的邮箱"/>
+        <i :class="isValidEmail ? 'mfic-right' : ''"></i>
       </div>
-      <div :class="['input-box', isValidPassword ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         密码：<input type="password" name="password" @input="validatePassword" placeholder="请输入您的密码，不少于8位"/>
+        <i :class="isValidPassword ? 'mfic-right' : ''"></i>
       </div>
     </form>
     <div :class="['button', (isValidEmail && isValidPassword) ? 'submit' : '']" 
@@ -45,6 +47,11 @@ import Toast from '~components/Toast.vue'
 let params = {}
 
 export default {
+  head () {
+    return {
+      title: `登录`
+    }
+  },
   data () {
     return {
       inputEmail: '',
@@ -140,7 +147,7 @@ export default {
   font-size 36px
   text-align left
   border-bottom 1px solid #e5e5e5
-  &.mfic-right::before
+  .mfic-right::before
     position absolute
     right 0
     top 50%

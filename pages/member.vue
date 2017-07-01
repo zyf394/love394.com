@@ -36,6 +36,11 @@ import {
 } from '../config'
 
 export default {
+  head () {
+    return {
+      title: `聚会名单`
+    }
+  },
   data () {
     return {
       members: []

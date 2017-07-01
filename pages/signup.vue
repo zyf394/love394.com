@@ -3,16 +3,19 @@
     <h2 class="title">
       创建您的个人账号
     </h2>
-    <p class="info-warn mfic-important">非394班级成员无法创建账号</p>
+    <p class="info-warn"><i class="mfic-important"></i>非394班级成员无法创建账号</p>
     <form class="form">
-      <div :class="['input-box', isValidName ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         姓名：<input type="text" name="username" @input="validateName" placeholder="请输入您的姓名" />
+        <i :class="isValidName ? 'mfic-right' : ''"></i>
       </div>
-      <div :class="['input-box', isValidEmail ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         邮箱：<input type="text" name="email" @input="validateEmail" placeholder="请输入您的邮箱"/>
+        <i :class="isValidEmail ? 'mfic-right' : ''"></i>
       </div>
-      <div :class="['input-box', isValidPassword ? 'mfic-right' : '']">
+      <div :class="['input-box']">
         密码：<input type="password" name="password" @input="validatePassword" placeholder="请输入您的密码，不少于8位"/>
+        <i :class="isValidPassword ? 'mfic-right' : ''"></i>
       </div>
     </form>
     <div :class="['button', (isValidName && isValidEmail && isValidPassword) ? 'submit' : 'disabled']" 
@@ -32,11 +35,9 @@
 import axios from 'axios'
 import {
   env,
-  origin
+  domain
 } from '../config'
 import Toast from '~components/Toast.vue'
-
-const domain = origin.prod
 
 export default {
   data () {
@@ -55,6 +56,11 @@ export default {
     }
   },
   methods: {
+    head () {
+      return {
+        title: `注册`
+      }
+    },
     signup (event) {
       let me = this
       if (me.isValidName && me.isValidEmail && me.isValidPassword) {
@@ -130,7 +136,7 @@ export default {
   color $color-light-grey-s
   font-size 28px
   font-weight 100
-  &.mfic-important::before
+  .mfic-important::before
     margin-right 4px
 .form
   margin 50px 0
@@ -153,7 +159,7 @@ export default {
     height 59px
     line-height 60px
     font-size 28px
-  &.mfic-right::before
+  .mfic-right::before
     position absolute
     right 0
     top 50%
