@@ -2,16 +2,11 @@
   <div>
     <nuxt/>
     <my-footer :style="{display: 'none'}"/>
-    <toast :isShow="toastObj.isShow"
-          :text="toastObj.text"
-          :icon="toastObj.icon"
-          ref="toast"/>
   </div>
 </template>
 
 <script>
 import MyFooter from '~components/Footer.vue'
-import Toast from '~components/Toast.vue'
 import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
   middleware: 'check-auth',
@@ -19,8 +14,7 @@ export default {
     ...mapGetters(['toastObj'])
   },
   components: {
-    MyFooter,
-    Toast
+    MyFooter
   },
   head () {
     return {
