@@ -84,7 +84,7 @@ export async function edit (ctx, next) {
   let req = ctx.request.body
   let keys = Object.keys(req)
   let query = {
-    _id: ObjectId(req._id)
+    name: req.name
   }
   let update = {}
   const exist = await ctx.mongo.db('member').collection('member').find(query).toArray()
