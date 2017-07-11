@@ -1,25 +1,9 @@
 import querystring from 'querystring'
 import url from 'url'
+import moment from 'moment'
 import { ObjectId } from 'mongodb'
-
-const ERRORS = {
-  SUCCESS: {
-    errno: 0,
-    errmsg: 'success'
-  },
-  MEMBER_ENROLLED: {
-    errno: 10001,
-    errmsg: '您已报过名'
-  },
-  MEMBER_NOT_EXIST: {
-    errno: 10002,
-    errmsg: '您非本班成员，无法报名'
-  },
-  MEMBER_PAYED: {
-    errno: 10003,
-    errmsg: '您已交费'
-  }
-}
+import { responseError, responseSuccess } from '../../utils/ctx'
+import ERRORS from '../../utils/errno'
 
 export default function (router) {
   router.post('/api/member/add', add)
@@ -35,10 +19,7 @@ export async function add (ctx, next) {
   const exits = await ctx.mongo.db('member').collection('member').find(query).toArray()
 
   if (exits.length) {
-    ctx.body = {
-      errno: 10001,
-      errmsg: 'Member exits.'
-    }
+    responseError(ctx, 'MEMBER_EXIST')
   } else {
     const member = {
       name: req.name || '',
@@ -46,13 +27,10 @@ export async function add (ctx, next) {
       is_payed: req.is_payed || 0,
       is_enrolled: req.is_enrolled || 0,
       enrolled_time: +new Date(),
-      pay_time: +new Date()
+      payed_time: +new Date()
     }
     const result = await ctx.mongo.db('member').collection('member').insert(member)
-    ctx.body = {
-      errno: 0,
-      errmsg: 'success'
-    }
+    responseSuccess(ctx)
   }
 }
 export async function remove (ctx, next) {
@@ -61,7 +39,7 @@ export async function remove (ctx, next) {
   try {
     const result = await ctx.mongo.db('member').collection('member').deleteOne(query)
     if (result.result.ok) {
-      responseError(ctx, 'SUCCESS')
+      responseSuccess(ctx)
     }
   } catch (e) {
     console.log(e)
@@ -97,7 +75,7 @@ export async function editAll(ctx, next) {
       }
       let result = await ctx.mongo.db('member').collection('member').update(query, update, { upsert: true })
     }
-    responseError(ctx, 'SUCCESS')
+    responseSuccess(ctx)
   } catch (e) {
     console.log(e)
   }
@@ -110,39 +88,46 @@ export async function edit (ctx, next) {
   }
   let update = {}
   const exist = await ctx.mongo.db('member').collection('member').find(query).toArray()
+
   if (exist.length) {
     if (req.is_enrolled && exist[0].is_enrolled) {
       responseError(ctx, 'MEMBER_ENROLLED')
     } else if (req.is_payed && exist[0].is_payed) {
       responseError(ctx, 'MEMBER_PAYED')
     } else {
-      keys.forEach(item => {
-        if (!update['$set']) {
-          update['$set'] = {}
-        }
-        if (item === '_id') {
-          update['$set'][item] = query._id
-        } else {
-          update['$set'][item] = req[item]
-        }
-      })
+      update = _serielizeUpdate(req)
       try {
         const result = await ctx.mongo.db('member').collection('member').updateOne(query, update)
         if (result.result.ok) {
-          responseError(ctx, 'SUCCESS')
+          responseSuccess(ctx)
         }
       } catch (e) {
         console.log(e)
       }
     }
   } else {
-    responseError(ctx, 'MEMBER_NOT_EXIST')
+    responseError(ctx, 'MEMBER_NOT_CLASSMATE')
   }
 }
 
-function responseError(ctx, type) {
-  ctx.body = {
-    errno: ERRORS[type].errno,
-    errmsg: ERRORS[type].errmsg
-  }
+function _serielizeUpdate (req) {
+  let update = {}
+  let now = +new Date()
+  let query = req
+  let keys = Object.keys(req)
+  keys.forEach(item => {
+    if (!update['$set']) {
+      update['$set'] = {}
+    }
+    if (item !== '_id') {
+      if (item === 'is_enrolled' && query.is_enrolled === 1) {
+        update['$set']['enrolled_time'] = moment(now).format('YYYY-MM-DD HH:mm:ss')
+      }
+      if (item === 'is_payed' && query.is_payed === 1) {
+        update['$set']['payed_time'] = moment(now).format('YYYY-MM-DD HH:mm:ss')
+      }
+      update['$set'][item] = req[item]
+    }
+  })
+  return update
 }

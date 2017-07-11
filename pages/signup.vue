@@ -18,10 +18,10 @@
         <i :class="isValidPassword ? 'mfic-right' : ''"></i>
       </div>
     </form>
-    <div :class="['button', (isValidName && isValidEmail && isValidPassword) ? 'submit' : 'disabled']" 
-          @click="signup">
-      注册
-    </div>
+    <my-button :class="btnClass"
+        :text="btnConf.text"
+        :clickHandler="signup">
+    </my-button>
     <nuxt-link class="button" to="/">
       返回首页
     </nuxt-link>
@@ -38,6 +38,7 @@ import {
   domain
 } from '../config'
 import Toast from '~components/Toast.vue'
+import MyButton from '~components/Button.vue'
 
 export default {
   data () {
@@ -52,7 +53,24 @@ export default {
       toastConf: {
         text: '',
         icon: ''
-      }
+      },
+      btnConf: {
+        class: '',
+        text: '注册'
+      },
+      isSubmitting: false
+    }
+  },
+  computed: {
+    btnClass() {
+      return [
+        (this.isValidName
+          && this.isValidEmail
+          && this.isValidPassword
+          && !this.isSubmitting)
+        ? 'submit' 
+        : 'disabled',
+        this.isSubmitting ? 'disabled' : '']
     }
   },
   methods: {
@@ -63,7 +81,10 @@ export default {
     },
     signup (event) {
       let me = this
-      if (me.isValidName && me.isValidEmail && me.isValidPassword) {
+      if (me.isValidName && me.isValidEmail && me.isValidPassword && !me.isSubmitting) {
+        me.isSubmitting = true
+        me.btnConf.text = '加载中...'
+
         axios.post(`http://${domain}/api/user/signup`,
           {
             username: this.inputName,
@@ -87,6 +108,8 @@ export default {
               window.setTimeout(() => me.$router.replace('/signin'), 3000)
             }
             me.$refs.toast.show()
+            me.isSubmitting = false
+            me.btnConf.text = '注册'
           })
           .catch(err => console.log(err))
       }
@@ -120,7 +143,8 @@ export default {
     }
   },
   components: {
-    Toast
+    Toast,
+    MyButton
   }
 }
 </script>

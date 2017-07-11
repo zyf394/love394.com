@@ -1,38 +1,32 @@
 <template>
-  <div>
-    <nuxt/>
-    <my-footer :style="{display: 'none'}"/>
-  </div>
+  <div :class="styl"
+        @click="clickHandler">{{text}}</div>
 </template>
-
 <script>
-import MyFooter from '~components/Footer.vue'
-import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
-  middleware: 'check-auth',
-  computed: {
-    ...mapGetters(['toastObj'])
+  props: {
+    text: {
+      type: String,
+      default: '按钮'
+    },
+    styl: {
+      type: String,
+      default: 'button'
+    },
+    clickHandler: {
+      type: Function,
+      default: () => {}
+    }
   },
-  components: {
-    MyFooter
-  },
-  head () {
+  data() {
     return {
-      title: `394聚会官方网站`
+      showFlag: false
     }
   }
 }
 </script>
-
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" >
 @import '~assets/css/variable.styl'
-
-.container
-  margin: 0;
-  width: 100%;
-  padding: 100px 0;
-  text-align: center;
-
 .button, .button:active
   display: block;
   color: $color-light-pink;
@@ -56,14 +50,4 @@ export default {
   &:hover
     color: #fff;
     background-color: $color-light-pink;
-
-.title
-  color: $color-grey;
-  font-weight: 300;
-  font-size: 72px;
-  margin: 0;
-
-input
-  border none 
-  -webkit-appearance none
 </style>

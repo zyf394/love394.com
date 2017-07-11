@@ -8,20 +8,20 @@
     </div>
     <p class="info-warn" v-show="!isRegsterSuccess"><i class="mfic-important"></i>非394班级成员无法报名</p>
     <form class="form" v-show="!isRegsterSuccess">
-      <div :class="['input-box']">
-        姓名：<input type="text" name="username" @input="validateName"/>
-        <i :class="isValidName ? 'mfic-right' : ''"></i>
+      <div class="input-box disabled">
+        姓名：<input type="text" name="username" v-model="user.username" @input="validateName" disabled/>
+        <i :class="user.username.length ? 'mfic-right' : ''"></i>
       </div>
       <div :class="['input-box']">
         电话：<input type="text" name="userphone" @input="validatePhone"/>
         <i :class="isValidPhone ? 'mfic-right' : ''"></i>
       </div>
     </form>
-    <div :class="['button', (isValidName && isValidPhone) ? 'submit' : '']" 
-          @click="register"
-          v-show="!isRegsterSuccess">
-      我要报名
-    </div>
+    <my-button :class="btnClass"
+            :text="btnConf.text"
+            :clickHandler="register"
+            v-show="!isRegsterSuccess">
+    </my-button>
     <nuxt-link class="button" to="/">
       返回首页
     </nuxt-link>
@@ -40,7 +40,7 @@ import {
 import { getToken, checkRedirectUrl } from '../utils/auth'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
-
+import MyButton from '~components/Button.vue'
 export default {
   head () {
     return {
@@ -49,22 +49,55 @@ export default {
   },
   data () {
     return {
-      inputName: '',
+      user: {
+        username: ''
+      },
       inputPhone: '',
-      isValidName: false,
       isValidPhone: false,
       shouldSubmit: false,
       toastConf: {
         text: '',
         icon: ''
       },
+      btnConf: {
+        class: '',
+        text: '我要报名'
+      },
+      isSubmitting: false,
       isRegsterSuccess: false
     }
+  },
+  computed: {
+    inputName () {
+      return this.user.username
+    },
+    nameId () {
+      return this.user._id
+    },
+    isValidName(){
+      return this.user.username.length > 0
+    },
+    btnClass() {
+      return [
+        (this.isValidName && this.isValidPhone && !this.isSubmitting) ? 'submit' : '',
+        this.isSubmitting ? 'disabled' : '']
+    }
+  },
+  asyncData ({ req, params, isServer }) {
+    const token = getToken(req)
+    return axios.post(`http://${domain}/api/user/get`, { token })
+            .then((res) => {
+              return { user: res.data.data.user }
+            })
+            .catch(err => console.log(err))
   },
   methods: {
     register (event) {
       let me = this
-      if (me.isValidName && me.isValidPhone) {
+      if (me.isValidName && me.isValidPhone && !me.isSubmitting) {
+        me.isSubmitting = true
+        me.btnConf.text = '加载中...'
+
         axios.post(`http://${domain}/api/member/edit`,
           {
             _id: this.nameId,
@@ -84,6 +117,8 @@ export default {
             } else {
               me.isRegsterSuccess = true
             }
+            me.isSubmitting = false
+            me.btnConf.text = '我要报名'
           })
           .catch(err => console.log(err))
       }
@@ -117,7 +152,8 @@ export default {
     }
   },
   components: {
-    Toast
+    Toast,
+    MyButton
   }
 }
 </script>

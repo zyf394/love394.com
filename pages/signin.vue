@@ -16,11 +16,11 @@
         <i :class="isValidPassword ? 'mfic-right' : ''"></i>
       </div>
     </form>
-    <div :class="['button', (isValidEmail && isValidPassword) ? 'submit' : '']" 
-          @click="signin"
-          v-show="!isSigninSuccess">
-      登录
-    </div>
+    <my-button :class="btnClass"
+        :text="btnConf.text"
+        :clickHandler="signin"
+        v-show="!isSigninSuccess">
+    </my-button>
     <nuxt-link class="button" to="/">
       返回首页
     </nuxt-link>
@@ -43,6 +43,7 @@ import {
 } from '../config'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Toast from '~components/Toast.vue'
+import MyButton from '~components/Button.vue'
 
 let params = {}
 
@@ -63,14 +64,29 @@ export default {
         text: '',
         icon: ''
       },
+      btnConf: {
+        class: '',
+        text: '登录'
+      },
+      isSubmitting: false,
       isSigninSuccess: false
+    }
+  },
+  computed: {
+    btnClass() {
+      return [
+        (this.isValidEmail && this.isValidPassword && !this.isSubmitting) ? 'submit' : '',
+        this.isSubmitting ? 'disabled' : '']
     }
   },
   methods: {
     ...mapMutations(['SET_TOKEN']),
     signin (event) {
       let me = this
-      if (me.isValidEmail && me.isValidPassword) {
+      if (me.isValidEmail && me.isValidPassword && !me.isSubmitting) {
+        me.isSubmitting = true
+        me.btnConf.text = '加载中...'
+
         axios.post(`http://${domain}/api/user/signin`,
           {
             email: this.inputEmail,
@@ -91,6 +107,8 @@ export default {
                 icon: 'mfic-right'
               }
               me.isSigninSuccess = true
+              me.isSubmitting = false
+              me.btnConf.text = '登录'
               me['SET_TOKEN'](resData.token)
               window.localStorage.setItem('token', resData.token)
               checkRedirectUrl({delay: 3000})
@@ -114,7 +132,8 @@ export default {
     }
   },
   components: {
-    Toast
+    Toast,
+    MyButton
   }
 }
 </script>
