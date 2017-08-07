@@ -94,6 +94,8 @@ export default {
           })
           .then((res) => {
             let resData = res.data
+            me.isSubmitting = false
+            me.btnConf.text = '登录'
             if (resData.errno) {
               me.toastConf = {
                 isShow: true,
@@ -101,16 +103,16 @@ export default {
                 icon: 'mfic-important'
               }
             } else {
+              let token = resData.data.token
               me.toastConf = {
                 isShow: true,
                 text: '登录成功，即将跳转',
                 icon: 'mfic-right'
               }
               me.isSigninSuccess = true
-              me.isSubmitting = false
-              me.btnConf.text = '登录'
-              me['SET_TOKEN'](resData.token)
-              window.localStorage.setItem('token', resData.token)
+              me['SET_TOKEN'](token)
+              window.localStorage.setItem('token', token)
+              debugger
               checkRedirectUrl({delay: 3000})
             }
             me.$refs.toast.show()

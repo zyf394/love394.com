@@ -29,8 +29,8 @@ async function signup (ctx, next) {
       let user = {
         username: req.username,
         email: req.email,
-        password: sha1(req.password), //加密
-        token: createToken(req.email), //创建token并存入数据库
+        password: sha1(req.password), // 加密
+        token: createToken(req.email), // 创建token并存入数据库
         create_time: moment(now).format('YYYY-MM-DD HH:mm:ss')
       }
       let result = await ctx.mongo.db('member').collection('user').insert(user)

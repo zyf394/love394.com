@@ -73,7 +73,11 @@ export async function editAll(ctx, next) {
           pay_time: list[i].pay_time
         }
       }
-      let result = await ctx.mongo.db('member').collection('member').update(query, update, { upsert: true })
+      try {
+        let result = await ctx.mongo.db('member').collection('member').update(query, update, { upsert: true })
+      } catch (e) {
+        console.log(e)
+      }
     }
     responseSuccess(ctx)
   } catch (e) {
@@ -100,6 +104,8 @@ export async function edit (ctx, next) {
         const result = await ctx.mongo.db('member').collection('member').updateOne(query, update)
         if (result.result.ok) {
           responseSuccess(ctx)
+        } else {
+          console.log(result.result)
         }
       } catch (e) {
         console.log(e)

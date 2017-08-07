@@ -30,7 +30,7 @@ export const setToken = (token) => {
 }
 
 export const getTokenFromCookie = (req) => {
-  if (!req.headers.cookie) return
+  if (!req.headers.cookie) return ''
   const tokenCookie = req.headers.cookie.split(';')
                   .find(c => c.trim().startsWith('token='))
   const token = tokenCookie ? tokenCookie.split('=')[1] : ''
@@ -39,5 +39,6 @@ export const getTokenFromCookie = (req) => {
 }
 
 export const getTokenFromLocalStorage = () => {
-  return window.localStorage.getItem('token')
+  const token = window.localStorage.getItem('token')
+  return token || ''
 }
