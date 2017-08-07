@@ -112,7 +112,6 @@ export default {
               me.isSigninSuccess = true
               me['SET_TOKEN'](token)
               window.localStorage.setItem('token', token)
-              debugger
               checkRedirectUrl({delay: 3000})
             }
             me.$refs.toast.show()

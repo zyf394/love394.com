@@ -87,7 +87,12 @@ export default {
     const token = getToken(req)
     return axios.post(`http://${domain}/api/user/get`, { token })
             .then((res) => {
-              return { user: res.data.data.user }
+              let resData = res.data
+              if (resData.errno) {
+                return { user: { username: '' } }
+              } else {
+                return { user: resData.data.user }
+              }
             })
             .catch(err => console.log(err))
   },
@@ -147,7 +152,7 @@ export default {
   },
   mounted () {
     let token = getToken()
-    if (!token) {
+    if (!token || token === 'undefined' || token === 'null') {
       this.$router.replace(`/signin?redirect_url=${window.location.href}`)
     }
   },
