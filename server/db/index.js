@@ -1,17 +1,16 @@
-import mongo from 'koa-mongoose'
-// const dbUrl = 'mongodb://' + auth.username + ':' + auth.password + '@localhost:27017/member'
-// const connect = mongoose.connect(dbUrl)
-const mongoose = mongo.mongoose
+let memberCache
+let userCache
 
-const MemberSchema = new mongoose.Schema({
-    name: {type: String},
-    phone: {type: String},
-    is_payed: {type: Boolean},
-    is_enrolled: {type: Boolean},
-    enrolled_time: {type: Date},
-    pay_time: {type: Date}
-})
+export function MemberModel (ctx) {
+  if (!memberCache) {
+    memberCache = ctx.mongo.db('member').collection('member')
+  }
+  return memberCache
+}
 
-const Member = mongoose.model('Member', MemberSchema)
-
-export default Member
+export function User (ctx) {
+  if (!userCache) {
+    userCache = ctx.mongo.db('member').collection('user')
+  }
+  return userCache
+}

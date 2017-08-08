@@ -21,6 +21,7 @@
         </tr>
       </tbody>
     </table>
+    <p :class="['addMembers-btn', isLastPage ? 'disabled' : '']" @click="addMembers">{{addMembersText}}</p>
     <nuxt-link class="button" to="/">
       返回首页
     </nuxt-link>
@@ -43,11 +44,14 @@ export default {
   },
   data () {
     return {
-      members: []
+      members: [],
+      page: 1,
+      isLastPage: false,
+      addMembersText: '点击加载更多名单'
     }
   },
   asyncData ({ req, params }) {
-    return axios.get(`http://${domain}/api/member/list`)
+    return axios.get(`http://${domain}/api/member/list?page=1&pageSize=10`)
     .then((res) => {
       return { members: res.data }
     })
@@ -58,6 +62,24 @@ export default {
     if (!token) {
       this.$router.replace(`/signin?redirect_url=${window.location.href}`)
     }
+  },
+  methods: {
+    addMembers() {
+      if (this.isLastPage) return
+      this.addMembersText = '加载中...'
+      this.page++
+      axios.get(`http://${domain}/api/member/list?page=${this.page}&pageSize=10`)
+        .then((res) => {
+          if (res.data.length < 10) {
+            this.isLastPage = true
+            this.addMembersText = '没有更多名单了'
+          } else {
+            this.addMembersText = '点击加载更多名单'
+          }
+          this.members.push(...res.data)
+        })
+        .catch(err => console.log(err))
+    }
   }
 }
 </script>
@@ -66,16 +88,22 @@ export default {
 @import '../assets/css/variable.styl'
 
 .title
-  padding-left: 60px
+  padding-left 60px
   font-size 50px
   text-align left
 .info
-  font-weight: 300;
-  color: $color-grey-pink;
-  margin: 10px 0 0 0;
+  font-weight 300
+  color $color-grey-pink
+  margin 10px 0 0 0
   text-align left
 .button
-  margin-top: 50px;
+  margin-top 50px
+.addMembers-btn
+  color $color-light-pink
+  font-size 28px
+  padding-top 40px
+  &.disabled
+    color $color-light-grey
 table
   margin 0 auto
   font-size 28px

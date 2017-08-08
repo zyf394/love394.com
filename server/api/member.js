@@ -4,7 +4,7 @@ import moment from 'moment'
 import { ObjectId } from 'mongodb'
 import { responseError, responseSuccess } from '../../utils/ctx'
 import ERRORS from '../../utils/errno'
-
+import { MemberModel } from '../db/index'
 export default function (router) {
   router.post('/api/member/add', add)
   router.post('/api/member/edit', edit)
@@ -15,7 +15,7 @@ export default function (router) {
 
 export async function add (ctx, next) {
   const req = ctx.request.body
-  const query = { name: req.name}
+  const query = { name: req.name }
   const exits = await ctx.mongo.db('member').collection('member').find(query).toArray()
 
   if (exits.length) {
@@ -52,7 +52,13 @@ export async function findOne (ctx, next) {
 }
 export async function findAll(ctx, next) {
   const query = url.parse(ctx.request.url, true).query
-  ctx.body = await ctx.mongo.db('member').collection('member').find(query).toArray()
+  const skipNum = (query.page - 1) * 10
+  const limitNum = parseInt(query.pageSize)
+  try {
+    ctx.body = await MemberModel(ctx).find({}).skip(skipNum).limit(limitNum).toArray()
+  } catch (e) {
+    console.log(e)
+  }
 }
 export async function editAll(ctx, next) {
   const req = ctx.request.body
