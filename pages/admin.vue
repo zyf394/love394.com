@@ -72,7 +72,7 @@ import {
   env,
   domain
 } from '../config'
-import VDialog from '~components/Dialog.vue'
+import VDialog from '../components/Dialog.vue'
 export default {
   head () {
     return {

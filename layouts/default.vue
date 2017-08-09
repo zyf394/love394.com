@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MyFooter from '~components/Footer.vue'
+import MyFooter from '../components/Footer.vue'
 import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
   middleware: 'check-auth',
