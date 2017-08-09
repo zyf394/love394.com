@@ -39,8 +39,8 @@ import {
 } from '../config'
 import { getToken, checkRedirectUrl } from '../utils/auth'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import Toast from '~components/Toast.vue'
-import MyButton from '~components/Button.vue'
+import Toast from '../components/Toast.vue'
+import MyButton from '../components/Button.vue'
 export default {
   head () {
     return {

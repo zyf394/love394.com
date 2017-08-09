@@ -37,8 +37,8 @@ import {
   env,
   domain
 } from '../config'
-import Toast from '~components/Toast.vue'
-import MyButton from '~components/Button.vue'
+import Toast from '../components/Toast.vue'
+import MyButton from '../components/Button.vue'
 
 export default {
   data () {

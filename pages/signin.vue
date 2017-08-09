@@ -42,8 +42,8 @@ import {
   domain
 } from '../config'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import Toast from '~components/Toast.vue'
-import MyButton from '~components/Button.vue'
+import Toast from '../components/Toast.vue'
+import MyButton from '../components/Button.vue'
 
 let params = {}
 
