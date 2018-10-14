@@ -20,10 +20,10 @@ async function signup (ctx, next) {
   let existEmail = await ctx.mongo.db('member').collection('user').find({ email: req.email || ''}).toArray()
 
   if (existName.length) {
-    responseError(ctx, 'USER_NAME_REGISTERED')
+    responseError(ctx, next, 'USER_NAME_REGISTERED')
   } else {
     if (existEmail.length) {
-      responseError(ctx, 'USER_EMAIL_REGISTERED')
+      responseError(ctx, next, 'USER_EMAIL_REGISTERED')
     } else {
       let now = +new Date()
       let user = {
@@ -35,7 +35,7 @@ async function signup (ctx, next) {
       }
       let result = await ctx.mongo.db('member').collection('user').insert(user)
 
-      responseSuccess(ctx)
+      responseSuccess(ctx, next)
     }
   }
 }
@@ -50,7 +50,7 @@ async function signin (ctx, next) {
   let userExist = await ctx.mongo.db('member').collection('user').find({ email }).toArray()
 
   if (!userExist.length) {
-    responseError(ctx, 'USER_EMAIL_NOT_REGISTERED')
+    responseError(ctx, next, 'USER_EMAIL_NOT_REGISTERED')
   } else {
     let user = userExist[0]
     if (user.password === password) {
@@ -63,10 +63,10 @@ async function signin (ctx, next) {
       let result = await ctx.mongo.db('member').collection('user').updateOne(query, update)
 
       ctx.cookies.set('token', token)
-      responseSuccess(ctx, { email, token }) // TODO 登录成功要创建一个新的token,应该存入数据库
+      responseSuccess(ctx, next, { email, token }) // TODO 登录成功要创建一个新的token,应该存入数据库
 
     } else{
-      responseError(ctx, 'USER_PASSWORD_INCORRECT')
+      responseError(ctx, next, 'USER_PASSWORD_INCORRECT')
     }
   }
 }

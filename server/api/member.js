@@ -19,7 +19,7 @@ export async function add (ctx, next) {
   const exits = await ctx.mongo.db('member').collection('member').find(query).toArray()
 
   if (exits.length) {
-    responseError(ctx, 'MEMBER_EXIST')
+    responseError(ctx, next, 'MEMBER_EXIST')
   } else {
     const member = {
       name: req.name || '',
@@ -30,7 +30,7 @@ export async function add (ctx, next) {
       payed_time: +new Date()
     }
     const result = await ctx.mongo.db('member').collection('member').insert(member)
-    responseSuccess(ctx)
+    responseSuccess(ctx, next)
   }
 }
 export async function remove (ctx, next) {
@@ -39,7 +39,7 @@ export async function remove (ctx, next) {
   try {
     const result = await ctx.mongo.db('member').collection('member').deleteOne(query)
     if (result.result.ok) {
-      responseSuccess(ctx)
+      responseSuccess(ctx, next)
     }
   } catch (e) {
     console.log(e)
@@ -85,7 +85,7 @@ export async function editAll(ctx, next) {
         console.log(e)
       }
     }
-    responseSuccess(ctx)
+    responseSuccess(ctx, next)
   } catch (e) {
     console.log(e)
   }
@@ -101,15 +101,15 @@ export async function edit (ctx, next) {
 
   if (exist.length) {
     if (req.is_enrolled && exist[0].is_enrolled) {
-      responseError(ctx, 'MEMBER_ENROLLED')
+      responseError(ctx, next, 'MEMBER_ENROLLED')
     } else if (req.is_payed && exist[0].is_payed) {
-      responseError(ctx, 'MEMBER_PAYED')
+      responseError(ctx, next, 'MEMBER_PAYED')
     } else {
       update = _serielizeUpdate(req)
       try {
         const result = await ctx.mongo.db('member').collection('member').updateOne(query, update)
         if (result.result.ok) {
-          responseSuccess(ctx)
+          responseSuccess(ctx, next)
         } else {
           console.log(result.result)
         }
@@ -118,7 +118,7 @@ export async function edit (ctx, next) {
       }
     }
   } else {
-    responseError(ctx, 'MEMBER_NOT_CLASSMATE')
+    responseError(ctx, next, 'MEMBER_NOT_CLASSMATE')
   }
 }
 

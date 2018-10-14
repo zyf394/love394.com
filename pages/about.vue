@@ -4,13 +4,13 @@
       394班10年聚会活动详情：
     </h1>
     <ul class="info">
-      <li><strong>时间：</strong>2017年10月6-7日</li>
-      <li><strong>地点：</strong>宾阳中学</li>
+      <li><strong>时间：</strong>2018年10月6-7日</li>
+      <li><strong>地点：</strong>BZ中学</li>
       <li><strong>活动安排：</strong></li>
       <li>
         <h3>10月6日：</h3>
         <ul>
-          <li><i class="mfic-time"></i>14：00 宾中门口集合</li>
+          <li><i class="mfic-time"></i>14：00 BZ中学门口集合</li>
           <li><i class="mfic-time"></i>15：00 校园游览拍照</li>
           <li><i class="mfic-time"></i>16：00 教室趣味活动（保密）</li>
           <li><i class="mfic-time"></i>17：00 拍集体合照</li>
