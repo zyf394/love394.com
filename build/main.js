@@ -984,11 +984,11 @@ var get = function () {
 
 
             if (!userExist.length) {
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils_ctx__["a" /* responseError */])(ctx, 'USER_NOT_EXIST');
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils_ctx__["a" /* responseError */])(ctx, next, 'USER_NOT_EXIST');
             } else {
               user = userExist[0];
 
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils_ctx__["b" /* responseSuccess */])(ctx, { user: user });
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils_ctx__["b" /* responseSuccess */])(ctx, next, { user: user });
             }
 
           case 6:

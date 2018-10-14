@@ -77,9 +77,9 @@ async function get (ctx, next) {
   let userExist = await ctx.mongo.db('member').collection('user').find({ token }).toArray()
 
   if (!userExist.length) {
-    responseError(ctx, 'USER_NOT_EXIST')
+    responseError(ctx, next, 'USER_NOT_EXIST')
   } else {
     let user = userExist[0]
-    responseSuccess(ctx, { user })
+    responseSuccess(ctx, next, { user })
   }
 }

@@ -10,7 +10,7 @@
     <form class="form" v-show="!isRegsterSuccess">
       <div class="input-box disabled">
         姓名：<input type="text" name="username" v-model="user.username" @input="validateName" disabled/>
-        <i :class="user.username.length ? 'mfic-right' : ''"></i>
+        <i :class="isValidName ? 'mfic-right' : ''"></i>
       </div>
       <div :class="['input-box']">
         电话：<input type="text" name="userphone" @input="validatePhone"/>
@@ -74,29 +74,33 @@ export default {
     nameId () {
       return this.user._id
     },
-    isValidName(){
+    isValidName () {
       return this.user.username.length > 0
     },
     btnClass() {
-      return [
-        (this.isValidName && this.isValidPhone && !this.isSubmitting) ? 'submit' : '',
-        this.isSubmitting ? 'disabled' : '']
+      const shouldSubmit = this.isValidName && this.isValidPhone && !this.isSubmitting
+      const btnClass = [
+        shouldSubmit ? 'submit' : 'disabled',
+        this.isSubmitting ? 'disabled' : ''
+      ]
+      return btnClass
     }
   },
-  asyncData ({ req, params, isServer }) {
-    const token = getToken(req)
-    return axios.post(`http://${domain}/api/user/get`, { token })
-            .then((res) => {
-              let resData = res.data
-              if (resData.errno) {
-                return { user: { username: '' } }
-              } else {
-                return { user: resData.data.user }
-              }
-            })
-            .catch(err => console.log(err))
-  },
   methods: {
+    getUserName () {
+      const me = this
+      const token = getToken()
+      axios.post(`http://${domain}/api/user/get`, { token })
+        .then((res) => {
+          let resData = res.data
+          if (resData.errno) {
+            me.user = { username: '' }
+          } else {
+            me.user = resData.data.user
+          }
+        })
+        .catch(err => console.log(err))
+    },
     register (event) {
       let me = this
       if (me.isValidName && me.isValidPhone && !me.isSubmitting) {
@@ -129,16 +133,17 @@ export default {
       }
     },
     validateName (event) {
+      const me = this
       let inputName = event.target.value
-      this.inputName = inputName
+      me.inputName = inputName
       axios.get(`http://${domain}/api/member/list`, {params: {name: inputName}})
         .then((res) => {
           let resData = res.data
           if (resData.length) {
-            this.isValidName = true
-            this.nameId = resData[0]._id
+            me.isValidName = true
+            me.nameId = resData[0]._id
           } else {
-            this.isValidName = false
+            me.isValidName = false
           }
         })
         .catch(err => console.log(err))
@@ -154,6 +159,8 @@ export default {
     let token = getToken()
     if (!token || token === 'undefined' || token === 'null') {
       this.$router.replace(`/signin?redirect_url=${window.location.href}`)
+    } else {
+      this.getUserName()
     }
   },
   components: {
