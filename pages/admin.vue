@@ -82,7 +82,7 @@ export default {
   asyncData ({ req, params }) {
     return axios.get(`http://${domain}/api/member/list`)
     .then((res) => {
-      let members = res.data.map(item => {
+      let members = res.data.data.map(item => {
         let enrolledTime = item.enrolled_time
         let payedTime = item.payed_time
         item.enrolled_time = enrolledTime ? moment(enrolledTime).format('YYYY-MM-DD HH:mm:ss') : ''
@@ -95,6 +95,7 @@ export default {
   },
   data () {
     return {
+      members: [],
       isEditting: false,
       willRemoveId: null,
       dialogConf: {
@@ -149,7 +150,7 @@ export default {
       this.$refs.dialog.hide()
     },
     submit () {
-      axios.post(`http://${domain}/api/member/list`, {data: this.members})
+      axios.post(`http://${domain}/api/member/list`, { data: this.members })
         .then((res) => {
           console.log(res)
           this.isEditting = false

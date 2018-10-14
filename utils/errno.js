@@ -38,5 +38,9 @@ export default {
   USER_NOT_EXIST: {
     errno: 20004,
     errmsg: '用户不存在'
+  },
+  INTERNAL_ERROR: {
+    errno: 99999,
+    errmsg: '系统内部错误'
   }
 }

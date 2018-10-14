@@ -53,7 +53,7 @@ export default {
   asyncData ({ req, params }) {
     return axios.get(`http://${domain}/api/member/list?page=1&pageSize=10`)
     .then((res) => {
-      return { members: res.data }
+      return { members: res.data.data }
     })
     .catch(err => console.log(err))
   },
@@ -70,13 +70,13 @@ export default {
       this.page++
       axios.get(`http://${domain}/api/member/list?page=${this.page}&pageSize=10`)
         .then((res) => {
-          if (res.data.length < 10) {
+          if (res.data.data && res.data.data.length < 10) {
             this.isLastPage = true
             this.addMembersText = '没有更多名单了'
           } else {
             this.addMembersText = '点击加载更多名单'
           }
-          this.members.push(...res.data)
+          (this.members || []).push(...res.data)
         })
         .catch(err => console.log(err))
     }

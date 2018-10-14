@@ -120,6 +120,10 @@ module.exports = __webpack_require__(26);
   USER_NOT_EXIST: {
     errno: 20004,
     errmsg: '用户不存在'
+  },
+  INTERNAL_ERROR: {
+    errno: 99999,
+    errmsg: '系统内部错误'
   }
 };
 
@@ -145,7 +149,8 @@ var responseError = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            ctx.status = 200;
+            _context.prev = 0;
+
             ctx.body = {
               errno: __WEBPACK_IMPORTED_MODULE_1__errno__["a" /* default */][type].errno,
               errmsg: __WEBPACK_IMPORTED_MODULE_1__errno__["a" /* default */][type].errmsg
@@ -160,11 +165,21 @@ var responseError = function () {
             return next();
 
           case 5:
+            _context.next = 10;
+            break;
+
+          case 7:
+            _context.prev = 7;
+            _context.t0 = _context['catch'](0);
+
+            console.error('[ERROR CONTEXT]: ' + ctx.method + ' ' + ctx.path + ' in responseError \n[ERROR STACK]:\n', _context.t0);
+
+          case 10:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this);
+    }, _callee, this, [[0, 7]]);
   }));
 
   return function responseError(_x, _x2, _x3) {
@@ -178,7 +193,8 @@ var responseSuccess = function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            ctx.status = 200;
+            _context2.prev = 0;
+
             ctx.body = {
               errno: 0,
               errmsg: 'success',
@@ -194,11 +210,21 @@ var responseSuccess = function () {
             return next();
 
           case 5:
+            _context2.next = 10;
+            break;
+
+          case 7:
+            _context2.prev = 7;
+            _context2.t0 = _context2['catch'](0);
+
+            console.error('[ERROR CONTEXT]: ' + ctx.method + ' ' + ctx.path + ' in responseSuccess \n[ERROR STACK]:\n', _context2.t0);
+
+          case 10:
           case 'end':
             return _context2.stop();
         }
       }
-    }, _callee2, this);
+    }, _callee2, this, [[0, 7]]);
   }));
 
   return function responseSuccess(_x5, _x6) {
@@ -481,7 +507,7 @@ var add = function () {
           case 12:
             result = _context.sent;
 
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next, result);
 
           case 14:
           case 'end':
@@ -513,7 +539,7 @@ var remove = function () {
             result = _context2.sent;
 
             if (result.result.ok) {
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next);
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next, result);
             }
             _context2.next = 12;
             break;
@@ -538,7 +564,7 @@ var remove = function () {
 }();
 var findOne = function () {
   var _ref3 = _asyncToGenerator(__WEBPACK_IMPORTED_MODULE_0__Users_didi_Project_mine_love394_com_node_modules_babel_runtime_regenerator___default.a.mark(function _callee3(ctx, next) {
-    var query;
+    var query, result;
     return __WEBPACK_IMPORTED_MODULE_0__Users_didi_Project_mine_love394_com_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -550,9 +576,11 @@ var findOne = function () {
             return ctx.mongo.db('member').collection('member').find(query).toArray();
 
           case 4:
-            ctx.body = _context3.sent;
+            result = _context3.sent;
 
-          case 5:
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next, result);
+
+          case 6:
           case 'end':
             return _context3.stop();
         }
@@ -564,9 +592,10 @@ var findOne = function () {
     return _ref3.apply(this, arguments);
   };
 }();
+
 var findAll = function () {
   var _ref4 = _asyncToGenerator(__WEBPACK_IMPORTED_MODULE_0__Users_didi_Project_mine_love394_com_node_modules_babel_runtime_regenerator___default.a.mark(function _callee4(ctx, next) {
-    var query, skipNum, limitNum;
+    var query, skipNum, limitNum, result;
     return __WEBPACK_IMPORTED_MODULE_0__Users_didi_Project_mine_love394_com_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -576,25 +605,28 @@ var findAll = function () {
             limitNum = parseInt(query.pageSize);
             _context4.prev = 3;
             _context4.next = 6;
-            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__db_index__["a" /* MemberModel */])(ctx).find({}).skip(skipNum).limit(limitNum).toArray();
+            return ctx.mongo.db('member').collection('member').find({}).skip(skipNum).limit(limitNum).toArray();
 
           case 6:
-            ctx.body = _context4.sent;
-            _context4.next = 12;
+            result = _context4.sent;
+
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next, result);
+            _context4.next = 14;
             break;
 
-          case 9:
-            _context4.prev = 9;
+          case 10:
+            _context4.prev = 10;
             _context4.t0 = _context4['catch'](3);
 
             console.log(_context4.t0);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["a" /* responseError */])(ctx, next, 'INTERNAL_ERROR');
 
-          case 12:
+          case 14:
           case 'end':
             return _context4.stop();
         }
       }
-    }, _callee4, this, [[3, 9]]);
+    }, _callee4, this, [[3, 10]]);
   }));
 
   return function findAll(_x7, _x8) {
@@ -609,13 +641,13 @@ var editAll = function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             req = ctx.request.body;
-            list = req.data || [];
+            list = (req.data || []).slice();
             _context5.prev = 2;
             i = 0;
 
           case 4:
             if (!(i < list.length)) {
-              _context5.next = 19;
+              _context5.next = 12;
               break;
             }
 
@@ -632,43 +664,37 @@ var editAll = function () {
                 pay_time: list[i].pay_time
               }
             };
-            _context5.prev = 7;
-            _context5.next = 10;
+            _context5.next = 9;
             return ctx.mongo.db('member').collection('member').update(query, update, { upsert: true });
 
-          case 10:
-            result = _context5.sent;
-            _context5.next = 16;
-            break;
-
-          case 13:
-            _context5.prev = 13;
-            _context5.t0 = _context5['catch'](7);
-
-            console.log(_context5.t0);
-
-          case 16:
+          case 9:
             i++;
             _context5.next = 4;
             break;
 
-          case 19:
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next);
-            _context5.next = 25;
+          case 12:
+            _context5.next = 14;
+            return ctx.mongo.db('member').collection('member').find({}).toArray();
+
+          case 14:
+            result = _context5.sent;
+
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["b" /* responseSuccess */])(ctx, next, result);
+            _context5.next = 21;
             break;
 
-          case 22:
-            _context5.prev = 22;
-            _context5.t1 = _context5['catch'](2);
+          case 18:
+            _context5.prev = 18;
+            _context5.t0 = _context5['catch'](2);
 
-            console.log(_context5.t1);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__utils_ctx__["a" /* responseError */])(ctx, next, 'INTERNAL_ERROR');
 
-          case 25:
+          case 21:
           case 'end':
             return _context5.stop();
         }
       }
-    }, _callee5, this, [[2, 22], [7, 13]]);
+    }, _callee5, this, [[2, 18]]);
   }));
 
   return function editAll(_x9, _x10) {
@@ -1009,7 +1035,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ exports["a"] = MemberModel;
+/* unused harmony export MemberModel */
 /* unused harmony export User */
 var memberCache = void 0;
 var userCache = void 0;

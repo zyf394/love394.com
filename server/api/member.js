@@ -30,7 +30,7 @@ export async function add (ctx, next) {
       payed_time: +new Date()
     }
     const result = await ctx.mongo.db('member').collection('member').insert(member)
-    responseSuccess(ctx, next)
+    responseSuccess(ctx, next, result)
   }
 }
 export async function remove (ctx, next) {
@@ -39,7 +39,7 @@ export async function remove (ctx, next) {
   try {
     const result = await ctx.mongo.db('member').collection('member').deleteOne(query)
     if (result.result.ok) {
-      responseSuccess(ctx, next)
+      responseSuccess(ctx, next, result)
     }
   } catch (e) {
     console.log(e)
@@ -48,22 +48,25 @@ export async function remove (ctx, next) {
 export async function findOne (ctx, next) {
   const query = ctx.request.body || {}
   query._id = ObjectId(query._id)
-  ctx.body = await ctx.mongo.db('member').collection('member').find(query).toArray()
+  const result = await ctx.mongo.db('member').collection('member').find(query).toArray()
+  responseSuccess(ctx, next, result)
 }
+
 export async function findAll(ctx, next) {
   const query = url.parse(ctx.request.url, true).query
   const skipNum = (query.page - 1) * 10
   const limitNum = parseInt(query.pageSize)
   try {
-    ctx.body = await MemberModel(ctx).find({}).skip(skipNum).limit(limitNum).toArray()
+    const result = await ctx.mongo.db('member').collection('member').find({}).skip(skipNum).limit(limitNum).toArray()
+    responseSuccess(ctx, next, result)
   } catch (e) {
     console.log(e)
+    responseError(ctx, next, 'INTERNAL_ERROR')
   }
 }
 export async function editAll(ctx, next) {
   const req = ctx.request.body
-  const list = req.data || []
-
+  const list = (req.data || []).slice()
   try {
     for (let i = 0; i < list.length; i++) {
       let query = {
@@ -79,15 +82,12 @@ export async function editAll(ctx, next) {
           pay_time: list[i].pay_time
         }
       }
-      try {
-        let result = await ctx.mongo.db('member').collection('member').update(query, update, { upsert: true })
-      } catch (e) {
-        console.log(e)
-      }
+      await ctx.mongo.db('member').collection('member').update(query, update, { upsert: true })
     }
-    responseSuccess(ctx, next)
+    const result = await ctx.mongo.db('member').collection('member').find({}).toArray()
+    responseSuccess(ctx, next, result)
   } catch (e) {
-    console.log(e)
+    responseError(ctx, next, 'INTERNAL_ERROR')
   }
 }
 export async function edit (ctx, next) {
