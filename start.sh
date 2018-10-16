@@ -1,2 +1,2 @@
 #!/bin/bash
-npm run build && pm2 start ecosystem.config.js --only love394-prod
+npm run build && pm2 start ecosystem.config.js --env production --only love394-prod
