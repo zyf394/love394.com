@@ -9,6 +9,7 @@ module.exports = {
       name:"love394-prod",
       script: "npm",
       args: "run start",
+      max_memory_restart: "10M",
       env: {
         NODE_ENV: "development",
       },
